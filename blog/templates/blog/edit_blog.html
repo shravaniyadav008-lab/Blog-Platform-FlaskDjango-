@@ -1,0 +1,129 @@
+{% extends 'blog/base.html' %} {% block title %} Edit Blog | Blog Platform {% endblock %} {% block content %}
+
+<div class="form-container">
+
+    <h2>Edit Blog</h2>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <!-- Blog Title -->
+
+        <div class="form-group">
+
+            <label for="title">
+                Blog Title
+            </label>
+
+            <input type="text" id="title" name="title" value="{{ blog.title }}" placeholder="Enter blog title" required>
+
+        </div>
+
+
+        <!-- Category -->
+
+        <div class="form-group">
+
+            <label for="category">
+                Category
+            </label>
+
+            <select id="category" name="category" required>
+
+                <option
+                    value="Technology"
+                    {% if blog.category == "Technology" %}selected{% endif %}
+                >
+                    Technology
+                </option>
+
+                <option
+                    value="Programming"
+                    {% if blog.category == "Programming" %}selected{% endif %}
+                >
+                    Programming
+                </option>
+
+                <option
+                    value="Education"
+                    {% if blog.category == "Education" %}selected{% endif %}
+                >
+                    Education
+                </option>
+
+                <option
+                    value="Lifestyle"
+                    {% if blog.category == "Lifestyle" %}selected{% endif %}
+                >
+                    Lifestyle
+                </option>
+
+                <option
+                    value="Travel"
+                    {% if blog.category == "Travel" %}selected{% endif %}
+                >
+                    Travel
+                </option>
+
+                <option
+                    value="Other"
+                    {% if blog.category == "Other" %}selected{% endif %}
+                >
+                    Other
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Image URL -->
+
+        <div class="form-group">
+
+            <label for="image">
+                Image URL
+            </label>
+
+            <input type="url" id="image" name="image" value="{{ blog.image }}" placeholder="https://example.com/image.jpg">
+
+        </div>
+
+
+        <!-- Blog Content -->
+
+        <div class="form-group">
+
+            <label for="content">
+                Blog Content
+            </label>
+
+            <textarea id="content" name="content" rows="12" placeholder="Write your blog here..." required>{{ blog.content }}</textarea>
+
+        </div>
+
+
+        <!-- Update Button -->
+
+        <button type="submit" class="form-btn">
+            💾 Update Blog
+        </button>
+
+    </form>
+
+
+    <!-- Cancel -->
+
+    <p style="text-align:center; margin-top:20px;">
+
+        <a href="{% url 'blog_detail' blog.id %}" style="color:#2563eb; font-weight:bold;">
+            ← Cancel
+        </a>
+
+    </p>
+
+</div>
+
+{% endblock %}

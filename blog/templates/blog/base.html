@@ -1,0 +1,115 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %} Blog Platform {% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+
+        <div class="container nav-container">
+
+            <a href="{% url 'home' %}" class="logo">
+                📝 Blog Platform
+            </a>
+
+            <div class="nav-links">
+
+                <a href="{% url 'home' %}">
+                    Home
+                </a> {% if user.is_authenticated %}
+
+                <a href="{% url 'create_blog' %}">
+                        Create Blog
+                    </a>
+
+                <a href="{% url 'my_blogs' %}">
+                        My Blogs
+                    </a>
+
+                <span class="welcome">
+                        Hi, {{ user.username }}
+                    </span>
+
+                <a href="{% url 'logout' %}" class="logout-btn">
+                        Logout
+                    </a> {% else %}
+
+                <a href="{% url 'login' %}">
+                        Login
+                    </a>
+
+                <a href="{% url 'register' %}" class="register-btn">
+                        Register
+                    </a> {% endif %}
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Messages -->
+
+    {% if messages %}
+
+    <div class="container messages">
+
+        {% for message in messages %}
+
+        <div class="message {{ message.tags }}">
+            {{ message }}
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- Main Content -->
+
+    <main>
+
+        {% block content %} {% endblock %}
+
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <div class="container">
+
+            <p>
+                © 2026 Blog Platform. All Rights Reserved.
+            </p>
+
+            <p>
+                Built with Python & Django
+            </p>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

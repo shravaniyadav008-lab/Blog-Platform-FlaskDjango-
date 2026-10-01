@@ -1,0 +1,170 @@
+{% extends 'blog/base.html' %} {% block title %} {{ blog.title }} | Blog Platform {% endblock %} {% block content %}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="blog-detail">
+
+            <!-- Blog Category -->
+
+            <span class="blog-category">
+                {{ blog.category }}
+            </span>
+
+
+            <!-- Blog Title -->
+
+            <h1 class="blog-title">
+                {{ blog.title }}
+            </h1>
+
+
+            <!-- Blog Meta -->
+
+            <p class="blog-meta">
+
+                By
+                <strong>
+                    {{ blog.author.username }}
+                </strong> · {{ blog.created_at|date:"d M Y, h:i A" }}
+
+            </p>
+
+
+            <!-- Blog Image -->
+
+            {% if blog.image %}
+
+            <img src="{{ blog.image }}" alt="{{ blog.title }}" class="detail-image"> {% endif %}
+
+
+            <!-- Blog Content -->
+
+            <div class="blog-text">
+
+                {{ blog.content|linebreaks }}
+
+            </div>
+
+
+            <!-- Author Actions -->
+
+            {% if user == blog.author %}
+
+            <div style="margin-top:30px;">
+
+                <a href="{% url 'edit_blog' blog.id %}" class="btn btn-primary">
+                        ✏️ Edit Blog
+                    </a>
+
+
+                <form method="POST" action="{% url 'delete_blog' blog.id %}" style="display:inline;">
+
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this blog?');">
+                            🗑️ Delete Blog
+                        </button>
+
+                </form>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Comments Section -->
+
+        <div class="comments-section">
+
+            <h2>
+                Comments
+            </h2>
+
+
+            {% if comments %} {% for comment in comments %}
+
+            <div class="comment">
+
+                <p class="comment-author">
+                    {{ comment.author.username }}
+                </p>
+
+                <p class="comment-date">
+                    {{ comment.created_at|date:"d M Y, h:i A" }}
+                </p>
+
+                <p>
+                    {{ comment.text }}
+                </p>
+
+            </div>
+
+            {% endfor %} {% else %}
+
+            <p>
+                No comments yet. Be the first to comment!
+            </p>
+
+            {% endif %}
+
+
+            <!-- Add Comment -->
+
+            {% if user.is_authenticated %}
+
+            <form method="POST" action="{% url 'add_comment' blog.id %}" style="margin-top:25px;">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+
+                    <label for="text">
+                            Add a Comment
+                        </label>
+
+                    <textarea id="text" name="text" rows="4" placeholder="Write your comment..." required></textarea>
+
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">
+                        💬 Post Comment
+                    </button>
+
+            </form>
+
+            {% else %}
+
+            <p style="margin-top:20px;">
+
+                Please
+                <a href="{% url 'login' %}" style="color:#2563eb; font-weight:bold;">
+                        Login
+                    </a> to comment.
+
+            </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Back Button -->
+
+        <div style="margin-top:30px;">
+
+            <a href="{% url 'home' %}" class="btn btn-secondary">
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
